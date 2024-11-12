@@ -12,7 +12,66 @@ To write a YACC program to recognize the grammar anb where n>=10.
 6.	Compile the yacc program with yacc compiler to produce output file as y.tab.c. eg $ yacc –d arith_id.y
 7.	Compile these with the C compiler as gcc lex.yy.c y.tab.c
 8.	Enter a string as input and it is identified as valid or invalid.
-# PROGRAM:
-# OUTPUT
+# PROGRAM 1:
+```
+%{
+/* Definition section */
+#include "y.tab.h"
+%}
+
+/* Rule Section */
+%%
+[aA] {return A;}
+[bB] {return B;}
+\n {return NL;}
+. {return yytext[0];}
+%%
+
+int yywrap()
+{
+    return 1;
+}
+```
+
+# PROGRAM 2:
+```
+%{
+/* Definition section */
+#include<stdio.h>
+#include<stdlib.h>
+%}
+
+%token A B NL
+
+/* Rule Section */
+%%
+stmt: S NL { 
+    printf("valid string\n");
+    exit(0); 
+}
+;
+S: A S B |
+;
+%%
+
+int yyerror(char *msg)
+{
+    printf("invalid string\n"); 
+    exit(0);
+}
+
+//driver code 
+int main()
+{
+    printf("enter the string\n"); 
+    yyparse();
+    return 0;
+}
+```
+
+# OUTPUT :
+
+![380366049-604456be-dcc6-4053-8c76-1c64c5ace027](https://github.com/user-attachments/assets/bccc39f3-e302-484c-b16a-dab72fd99c61)
+
 # RESULT
 The YACC program to recognize the grammar anb where n>=10 is executed successfully and the output is verified.
